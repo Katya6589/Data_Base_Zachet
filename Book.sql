@@ -426,3 +426,24 @@ SELECT title, sum(Количество) as 'Количество', sum(Сумм�
 group by title union all select title, sum(buy_book.amount) as 'Количество', sum(price*buy_book.amount) as 'Сумма' from book JOIN buy_book using (book_id) JOIN buy_step using (buy_id) JOIN step using (step_id)
 where step.name_step = 'Оплата' and buy_step.date_step_end is not null group by title) as query_in group by title order by Сумма desc;
 
+2.5.2
+Задание
+Включить нового человека в таблицу с клиентами. Его имя Попов Илья, его email popov@test, проживает он в Москве.
+use book;
+INSERT INTO city(name_client,city_id,email) SELECT 'Попов Илья', '1', 'popov@test' FROM city WHERE name_city = 'Москва';
+SELECT * FROM city;
+
+2.5.3
+Задание
+Создать новый заказ для Попова Ильи. Его комментарий для заказа: «Связаться со мной по вопросу доставки».
+INSERT buy (buy_description, client_id) SELECT 'Связаться со мной по вопросу доставки', client_id FROM client WHERE name_client IN ('Попов Илья');
+
+2.5.4
+Задание
+В таблицу buy_book добавить заказ с номером 5. Этот заказ должен содержать книгу Пастернака «Лирика» в количестве двух экземпляров и книгу Булгакова «Белая гвардия» в одном экземпляре.
+INSERT INTO buy_book (buy_id, book_id, amount) VALUES (5, (SELECT book_id FROM book JOIN author USING(author_id)  WHERE title='Лирика' AND name_author LIKE 'Пастернак%'), 2),(5, (SELECT book_id  FROM book JOIN author USING(author_id)  WHERE title='Белая Гвардия' AND name_author LIKE 'Булгаков%'), 1);
+SELECT * FROM buy_book;
+
+2.5.5
+
+
